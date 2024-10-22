@@ -1,7 +1,40 @@
-import { Button, Label, TextInput } from 'flowbite-react';
-import { Link } from 'react-router-dom';
+import { Alert, Button, Label, Spinner, TextInput } from 'flowbite-react';
+import { FormEventHandler, useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { signupRepo } from '~modules/user';
+
+interface IUserForm {
+    username: string;
+    email: string;
+    password: string;
+}
 
 function SignUpPage() {
+    const inputRefs = useRef<HTMLInputElement[]>([]);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(false);
+    const navigate = useNavigate();
+
+    const handleSubmit: FormEventHandler = async (e) => {
+        e.preventDefault();
+        const data = inputRefs.current.reduce(
+            (prev, current) => ({ ...prev, [current.name]: current.value }),
+            {} as IUserForm,
+        );
+        setLoading(true);
+        setErrorMessage(null);
+
+        const result = await signupRepo(data);
+
+        if ('success' in result && !result.success) {
+            setErrorMessage(result.message);
+        } else {
+            navigate('/sign-in');
+        }
+
+        setLoading(false);
+    };
+
     return (
         <div className='min-h-screen mt-20'>
             <div className='flex p-3 max-w-3xl mx-auto flex-col md:flex-row md:items-center gap-5'>
@@ -19,24 +52,55 @@ function SignUpPage() {
                 </div>
 
                 <div className='flex-1'>
-                    <form className='flex flex-col gap-4'>
+                    <form className='flex flex-col gap-4' onSubmit={handleSubmit}>
                         <div>
                             <Label value='Your username' />
-                            <TextInput id='username' type='text' placeholder='Username' />
+                            <TextInput
+                                ref={(ref) => {
+                                    inputRefs.current[0] = ref!;
+                                }}
+                                id='username'
+                                name='username'
+                                type='text'
+                                placeholder='Username'
+                            />
                         </div>
 
                         <div>
                             <Label value='Your email' />
-                            <TextInput id='email' type='text' placeholder='name@gmail.com   ' />
+                            <TextInput
+                                ref={(ref) => {
+                                    inputRefs.current[1] = ref!;
+                                }}
+                                id='email'
+                                name='email'
+                                type='text'
+                                placeholder='name@gmail.com   '
+                            />
                         </div>
 
                         <div>
                             <Label value='Your password' />
-                            <TextInput id='password' type='text' placeholder='Password' />
+                            <TextInput
+                                ref={(ref) => {
+                                    inputRefs.current[2] = ref!;
+                                }}
+                                id='password'
+                                name='password'
+                                type='text'
+                                placeholder='Password'
+                            />
                         </div>
 
-                        <Button type='submit' gradientDuoTone='purpleToPink'>
-                            Sign Up
+                        <Button type='submit' gradientDuoTone='purpleToPink' disabled={loading}>
+                            {loading ? (
+                                <>
+                                    <Spinner size='sm' />
+                                    <span className='pl-3'>Loading...</span>
+                                </>
+                            ) : (
+                                'Sign Up'
+                            )}
                         </Button>
                     </form>
 
@@ -46,6 +110,12 @@ function SignUpPage() {
                             Sign In
                         </Link>
                     </div>
+
+                    {errorMessage && (
+                        <Alert className='mt-5' color='failure'>
+                            {errorMessage}
+                        </Alert>
+                    )}
                 </div>
             </div>
         </div>
