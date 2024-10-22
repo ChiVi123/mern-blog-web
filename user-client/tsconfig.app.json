@@ -31,6 +31,8 @@
             "~layout": ["./src/layout"],
             "~layout/*": ["./src/layout/*"],
 
+            "~modules/*": ["./src/modules/*"],
+
             "~routers": ["./src/routers"],
             "~routers/*": ["./src/routers/*"],
 
