@@ -1,6 +1,8 @@
+import "dotenv-expand/config";
 import "dotenv/config";
 import express from "express";
 import mongoose from "mongoose";
+import authRoutes from "./routes/auth.route";
 
 // Valid process env is here
 
@@ -11,6 +13,10 @@ mongoose
 
 const app = express();
 
-app.listen(3002, () => {
-    console.log("Server is running on port 3002!!!");
+app.use(express.json());
+
+app.use("/api/auth", authRoutes);
+
+app.listen(process.env.PORT, () => {
+    console.log(`Server is running on port ${process.env.PORT}`);
 });
