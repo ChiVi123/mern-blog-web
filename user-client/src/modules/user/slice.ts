@@ -49,6 +49,7 @@ const userSlice = createSlice({
     },
     selectors: {
         allState: (state) => state,
+        data: (state) => state.data,
     },
 });
 
