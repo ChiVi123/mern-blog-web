@@ -1,5 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { DefaultLayout } from '~layout';
+
+import { DashBoardLayout, DefaultLayout } from '~layout';
 import { aboutRouter } from '~view/about/router';
 import { dashboardCommentListRouter } from '~view/dashboard/comment-list/router';
 import { dashboardPostListRouter } from '~view/dashboard/post-list/router';
@@ -11,6 +12,7 @@ import { projectsRouter } from '~view/projects/router';
 import { searchRouter } from '~view/search/router';
 import { signInRouter } from '~view/sign-in/router';
 import { signUpRouter } from '~view/sign-up/router';
+
 import { PrivateRoute } from './components';
 
 export const browserRouter = createBrowserRouter([
@@ -21,7 +23,7 @@ export const browserRouter = createBrowserRouter([
     },
     {
         path: '',
-        Component: DefaultLayout,
+        Component: DashBoardLayout,
         children: [
             {
                 path: '/dashboard',
