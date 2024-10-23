@@ -33,7 +33,12 @@
         "baseUrl": "./server",
         /* Specify a set of entries that re-map imports to additional lookup locations. */
         "paths": {
-            "~controllers/*": ["controllers/*"]
+            "~controllers/*": ["controllers/*"],
+            "~models/*": ["models/*"],
+            "~types": ["types"],
+            "~types/*": ["types/*"],
+            "~utils": ["utils"],
+            "~utils/*": ["utils/*"]
         },
         // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
         // "typeRoots": [],                                  /* Specify multiple folders that act like './node_modules/@types'. */
@@ -50,7 +55,8 @@
         // "noResolve": true,                                /* Disallow 'import's, 'require's or '<reference>'s from expanding the number of files TypeScript should add to a project. */
 
         /* JavaScript Support */
-        // "allowJs": true,                                  /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */
+        /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */
+        "allowJs": true,
         // "checkJs": true,                                  /* Enable error reporting in type-checked JavaScript files. */
         // "maxNodeModuleJsDepth": 1,                        /* Specify the maximum folder depth used for checking JavaScript files from 'node_modules'. Only applicable with 'allowJs'. */
 
@@ -64,7 +70,8 @@
         // "outFile": "./",                                  /* Specify a file that bundles all outputs into one JavaScript file. If 'declaration' is true, also designates a file that bundles all .d.ts output. */
         /* Specify an output folder for all emitted files. */
         "outDir": "./dist",
-        // "removeComments": true,                           /* Disable emitting comments. */
+        /* Disable emitting comments. */
+        "removeComments": true,
         // "importHelpers": true,                            /* Allow importing helper functions from tslib once per project, instead of including them per-file. */
         // "downlevelIteration": true,                       /* Emit more compliant, but verbose and less performant JavaScript for iteration. */
         // "sourceRoot": "",                                 /* Specify the root path for debuggers to find the reference source code. */
@@ -83,10 +90,11 @@
         // "verbatimModuleSyntax": true,                     /* Do not transform or elide any imports or exports not marked as type-only, ensuring they are written in the output file's format based on the 'module' setting. */
         // "isolatedDeclarations": true,                     /* Require sufficient annotation on exports so other tools can trivially generate declaration files. */
         // "allowSyntheticDefaultImports": true,             /* Allow 'import x from y' when a module doesn't have a default export. */
-        "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */,
+        /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */
+        "esModuleInterop": true,
         // "preserveSymlinks": true,                         /* Disable resolving symlinks to their realpath. This correlates to the same flag in node. */
-        "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
-
+        /* Ensure that casing is correct in imports. */
+        "forceConsistentCasingInFileNames": true,
         /* Type Checking */
         "strict": true /* Enable all strict type-checking options. */,
         // "noImplicitAny": true,                            /* Enable error reporting for expressions and declarations with an implied 'any' type. */
