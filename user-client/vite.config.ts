@@ -20,6 +20,7 @@ export default defineConfig({
             '~modules': path.resolve(__dirname, './src/modules'),
             '~routers': path.resolve(__dirname, './src/routers'),
             '~components': path.resolve(__dirname, './src/shared/components'),
+            '~helper': path.resolve(__dirname, './src/shared/helper'),
             '~view': path.resolve(__dirname, './src/view'),
         },
     },
