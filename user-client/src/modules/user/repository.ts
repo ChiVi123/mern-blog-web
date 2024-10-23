@@ -6,6 +6,11 @@ interface IUserForm {
     email: string;
     password: string;
 }
+interface IResolveGoogle {
+    name: string;
+    email: string;
+    googlePhotoUrl: string;
+}
 
 export const signupRepo = async (formData: IUserForm) => {
     try {
@@ -16,9 +21,9 @@ export const signupRepo = async (formData: IUserForm) => {
     }
 };
 
-export const signInRepo = async (formData: Omit<IUserForm, 'username'>) => {
+export const continueWithGoogleRepo = async (data: IResolveGoogle) => {
     try {
-        const res = await http.post('/api/auth/sign-in', formData);
+        const res = await http.post('/api/auth/google', data);
         return res.data;
     } catch (error) {
         return getAxiosError(error);

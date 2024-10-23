@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { fetchSignIn } from './async';
 import { IUserEntity } from './entity';
@@ -17,6 +17,10 @@ const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: (creators) => ({
+        signInSuccess: creators.reducer((state, { payload }: PayloadAction<IUserEntity>) => {
+            state.data = payload;
+            state.loading = 'fulfilled';
+        }),
         clear: creators.reducer((state) => {
             state.data = null;
             state.loading = 'idle';

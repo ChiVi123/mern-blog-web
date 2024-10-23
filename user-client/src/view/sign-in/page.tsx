@@ -2,6 +2,7 @@ import { Alert, Button, Label, Spinner, TextInput } from 'flowbite-react';
 import { FormEventHandler, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+import { ButtonOauth } from '~components';
 import { useAppDispatch } from '~core/store';
 import { userSelectors } from '~modules/user';
 import { fetchSignIn } from '~modules/user/async';
@@ -86,6 +87,8 @@ function SignInPage() {
                                 'Sign In'
                             )}
                         </Button>
+
+                        <ButtonOauth />
                     </form>
 
                     <div className='flex gap-2 text-sm mt-5'>
