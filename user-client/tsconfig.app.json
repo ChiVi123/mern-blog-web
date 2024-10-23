@@ -43,7 +43,9 @@
             "~helper/*": ["./src/shared/helper/*"],
 
             "~view/*": ["./src/view/*"]
-        }
+        },
+
+        "typeRoots": ["types"]
     },
     "include": ["src"]
 }
