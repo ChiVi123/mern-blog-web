@@ -1,7 +1,10 @@
 import { Alert, Button, Label, Spinner, TextInput } from 'flowbite-react';
-import { FormEventHandler, useRef, useState } from 'react';
+import { FormEventHandler, useEffect, useRef } from 'react';
+import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { signInRepo } from '~modules/user';
+import { useAppDispatch } from '~core/store';
+import { userSelectors } from '~modules/user';
+import { fetchSignIn } from '~modules/user/async';
 
 interface IUserForm {
     email: string;
@@ -10,9 +13,15 @@ interface IUserForm {
 
 function SignInPage() {
     const inputRefs = useRef<HTMLInputElement[]>([]);
-    const [errorMessage, setErrorMessage] = useState<string | null>(null);
-    const [loading, setLoading] = useState<boolean>(false);
+    const userState = useSelector(userSelectors.allState);
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        if (userState.loading === 'fulfilled') {
+            navigate('/');
+        }
+    }, [navigate, userState.loading]);
 
     const handleSubmit: FormEventHandler = async (e) => {
         e.preventDefault();
@@ -20,18 +29,7 @@ function SignInPage() {
             (prev, current) => ({ ...prev, [current.name]: current.value }),
             {} as IUserForm,
         );
-        setLoading(true);
-        setErrorMessage(null);
-
-        const result = await signInRepo(data);
-
-        if ('success' in result && !result.success) {
-            setErrorMessage(result.message);
-        } else {
-            navigate('/');
-        }
-
-        setLoading(false);
+        await dispatch(fetchSignIn(data));
     };
 
     return (
@@ -78,8 +76,8 @@ function SignInPage() {
                             />
                         </div>
 
-                        <Button type='submit' gradientDuoTone='purpleToPink' disabled={loading}>
-                            {loading ? (
+                        <Button type='submit' gradientDuoTone='purpleToPink' disabled={userState.loading === 'pending'}>
+                            {userState.loading === 'pending' ? (
                                 <>
                                     <Spinner size='sm' />
                                     <span className='pl-3'>Loading...</span>
@@ -97,9 +95,9 @@ function SignInPage() {
                         </Link>
                     </div>
 
-                    {errorMessage && (
+                    {userState.loading === 'rejected' && (
                         <Alert className='mt-5' color='failure'>
-                            {errorMessage}
+                            {userState.error}
                         </Alert>
                     )}
                 </div>
