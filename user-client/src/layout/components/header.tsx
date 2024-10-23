@@ -1,12 +1,16 @@
 import { Avatar, Button, Dropdown, Navbar, TextInput } from 'flowbite-react';
 import { AiOutlineSearch } from 'react-icons/ai';
-import { FaMoon } from 'react-icons/fa';
+import { FaMoon, FaSun } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
+import { useAppDispatch } from '~core/store';
+import { themeActions, themeSelectors } from '~modules/theme';
 import { userSelectors } from '~modules/user';
 
 function Header() {
     const user = useSelector(userSelectors.data);
+    const theme = useSelector(themeSelectors.data);
+    const dispatch = useAppDispatch();
 
     return (
         <Navbar className='border-b-2'>
@@ -39,8 +43,9 @@ function Header() {
                     color='gray'
                     pill
                     className='w-12 h-10 hidden sm:inline'
+                    onClick={() => dispatch(themeActions.toggle())}
                 >
-                    <FaMoon />
+                    {theme === 'light' ? <FaSun /> : <FaMoon />}
                 </Button>
 
                 {user ? (

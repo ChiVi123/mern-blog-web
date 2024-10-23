@@ -3,9 +3,11 @@ import { useDispatch } from 'react-redux';
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
+import themeReducer from '~modules/theme/slice';
 import userReducer from '~modules/user/slice';
 
 const rootReducer = combineReducers({
+    theme: themeReducer,
     user: userReducer,
 });
 const persistConfig = {
