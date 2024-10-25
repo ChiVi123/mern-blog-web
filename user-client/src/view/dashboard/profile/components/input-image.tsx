@@ -2,15 +2,17 @@ import 'react-circular-progressbar/dist/styles.css';
 
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { Alert } from 'flowbite-react';
+
 import { ChangeEventHandler, useEffect, useRef, useState } from 'react';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import { storageFirebase } from '~config';
 
 interface IProps {
     profilePicture?: string | undefined;
+    onChange?: (value: string) => void;
 }
 
-function InputImage({ profilePicture }: IProps) {
+function InputImage({ profilePicture, onChange }: IProps) {
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [imageFileUrl, setImageFileUrl] = useState<string | null>(null);
     const [imageFileUploadProgress, setImageFileUploadProgress] = useState<string | null>(null);
@@ -26,13 +28,15 @@ function InputImage({ profilePicture }: IProps) {
     }, [imageFileUrl]);
 
     useEffect(() => {
+        let unsubscribe: unknown;
+
         if (imageFile) {
             setImageFileUploadError(null);
             const filename = new Date().getTime() + '-' + imageFile.name;
             const storageRef = ref(storageFirebase, filename);
             const uploadTask = uploadBytesResumable(storageRef, imageFile);
 
-            uploadTask.on(
+            unsubscribe = uploadTask.on(
                 'state_changed',
                 (snapshot) => {
                     const process: number = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
@@ -41,18 +45,30 @@ function InputImage({ profilePicture }: IProps) {
                 (error) => {
                     console.log('upload error:', error);
                     setImageFileUploadError('Could not upload image (File must be less than 2MB)');
+                    setImageFileUrl(null);
                     setImageFileUploadProgress(null);
                     setImageFile(null);
-                    setImageFileUrl(null);
                 },
                 () => {
                     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                         setImageFileUrl(downloadURL);
+                        setImageFileUploadProgress(null);
+                        setImageFile(null);
+
+                        if (onChange) {
+                            onChange(downloadURL);
+                        }
                     });
                 },
             );
         }
-    }, [imageFile]);
+
+        return () => {
+            if (typeof unsubscribe === 'function') {
+                unsubscribe();
+            }
+        };
+    }, [imageFile, onChange]);
 
     const handleImageChange: ChangeEventHandler<HTMLInputElement> = (e) => {
         const file = e.currentTarget.files![0];
