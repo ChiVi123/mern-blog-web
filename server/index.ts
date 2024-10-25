@@ -1,8 +1,12 @@
 import "dotenv-expand/config";
 import "dotenv/config";
+
+import cookieParser from "cookie-parser";
 import express, { Response } from "express";
 import mongoose from "mongoose";
-import authRoutes from "./routes/auth.route";
+
+import authRoutes from "~routes/auth.route";
+import userRoutes from "~routes/user.route";
 
 // Valid process env is here
 
@@ -15,9 +19,11 @@ const app = express();
 
 // config
 app.use(express.json());
+app.use(cookieParser());
 
 // routes
 app.use("/api/auth", authRoutes);
+app.use("/api/user", userRoutes);
 
 // middleware
 app.use((err: Error, _req: any, res: Response, _next: any) => {
