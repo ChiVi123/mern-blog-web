@@ -1,8 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { AxiosError } from 'axios';
 
 import { http } from '~core';
 
+import { getAxiosError } from '~helper';
 import { IUserEntity } from './entity';
 
 type GetThunkAPIType = { rejectValue: IRejectValue };
@@ -16,15 +16,7 @@ export const fetchSignIn = createAsyncThunk<IUserEntity, SignInParamsType, GetTh
             const res = await http.post('/api/auth/sign-in', params);
             return res.data;
         } catch (error) {
-            return rejectWithValue(
-                error instanceof AxiosError
-                    ? error.response?.data
-                    : {
-                          success: false,
-                          statusCode: 500,
-                          message: 'Internal Server Error',
-                      },
-            );
+            return rejectWithValue(getAxiosError(error));
         }
     },
 );
@@ -35,15 +27,19 @@ export const fetchUpdateUser = createAsyncThunk<IUserEntity, UpdateParamsType, G
             const res = await http.put(`/api/user/update/${params._id!}`, params);
             return res.data;
         } catch (error) {
-            return rejectWithValue(
-                error instanceof AxiosError
-                    ? error.response?.data
-                    : {
-                          success: false,
-                          statusCode: 500,
-                          message: 'Internal Server Error',
-                      },
-            );
+            return rejectWithValue(getAxiosError(error));
+        }
+    },
+);
+export const fetchDeleteUser = createAsyncThunk<null, { id: string }, GetThunkAPIType>(
+    'user/fetchDeleteUser',
+    async ({ id }, { rejectWithValue }) => {
+        try {
+            const res = await http.delete(`/api/user/delete/${id}`);
+            console.log(res.data);
+            return null;
+        } catch (error) {
+            return rejectWithValue(getAxiosError(error));
         }
     },
 );

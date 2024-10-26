@@ -1,13 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { fetchSignIn, fetchUpdateUser } from './async';
+import { fetchDeleteUser, fetchSignIn, fetchUpdateUser } from './async';
 import { IUserEntity } from './entity';
 
 interface IUserState extends IReduxState {
     data: IUserEntity | null;
+    type: '' | 'fetchSignIn' | 'fetchUpdateUser' | 'fetchDeleteUser';
 }
 
 const initialState: IUserState = {
+    type: '',
     data: null,
     loading: 'idle',
     error: undefined,
@@ -22,10 +24,12 @@ const userSlice = createSlice({
             state.loading = 'fulfilled';
         }),
         reset: creators.reducer((state) => {
+            state.type = '';
             state.loading = 'idle';
             state.error = undefined;
         }),
         clear: creators.reducer((state) => {
+            state.type = '';
             state.data = null;
             state.loading = 'idle';
             state.error = undefined;
@@ -34,37 +38,54 @@ const userSlice = createSlice({
     extraReducers: (builder) => {
         // fetchSignIn
         builder.addCase(fetchSignIn.pending, (state) => {
+            state.type = 'fetchSignIn';
             state.loading = 'pending';
             state.error = undefined;
         });
-
         builder.addCase(fetchSignIn.fulfilled, (state, { payload }) => {
             if (state.loading === 'pending') {
                 state.data = payload;
                 state.loading = 'fulfilled';
+                state.error = undefined;
             }
         });
-
         builder.addCase(fetchSignIn.rejected, (state, { payload }) => {
-            state.data = null;
             state.loading = 'rejected';
             state.error = payload!.message;
         });
 
         // fetchUpdateUser
         builder.addCase(fetchUpdateUser.pending, (state) => {
+            state.type = 'fetchUpdateUser';
             state.loading = 'pending';
             state.error = undefined;
         });
-
         builder.addCase(fetchUpdateUser.fulfilled, (state, { payload }) => {
             if (state.loading === 'pending') {
                 state.data = payload;
                 state.loading = 'fulfilled';
+                state.error = undefined;
             }
         });
-
         builder.addCase(fetchUpdateUser.rejected, (state, { payload }) => {
+            state.loading = 'rejected';
+            state.error = payload!.message;
+        });
+
+        // fetchDeleteUser
+        builder.addCase(fetchDeleteUser.pending, (state) => {
+            state.type = 'fetchDeleteUser';
+            state.loading = 'pending';
+            state.error = undefined;
+        });
+        builder.addCase(fetchDeleteUser.fulfilled, (state, { payload }) => {
+            if (state.loading === 'pending') {
+                state.data = payload;
+                state.loading = 'fulfilled';
+                state.error = undefined;
+            }
+        });
+        builder.addCase(fetchDeleteUser.rejected, (state, { payload }) => {
             state.loading = 'rejected';
             state.error = payload!.message;
         });
