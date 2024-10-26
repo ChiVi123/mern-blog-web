@@ -1,0 +1,46 @@
+.custom-tiptap-wrapper .tiptap {
+    padding: 12px 15px;
+}
+
+.custom-tiptap-wrapper .tiptap p.is-editor-empty:first-child::before {
+    color: #adb5bd;
+    content: attr(data-placeholder);
+    float: left;
+    height: 0;
+    pointer-events: none;
+}
+
+.custom-tiptap-wrapper .tiptap ul {
+    list-style: disc;
+}
+
+.custom-tiptap-wrapper .tiptap ol {
+    list-style: decimal;
+}
+
+.custom-tiptap-wrapper .tiptap ul,
+.custom-tiptap-wrapper .tiptap ol {
+    margin-left: 16px;
+}
+
+.custom-tiptap-wrapper .tiptap h1 {
+    font-size: 28px;
+}
+
+.custom-tiptap-wrapper .tiptap h2 {
+    font-size: 24px;
+}
+
+.custom-tiptap-wrapper .tiptap h3 {
+    font-size: 18px;
+}
+
+.custom-tiptap-wrapper .tiptap h1,
+.custom-tiptap-wrapper .tiptap h2,
+.custom-tiptap-wrapper .tiptap h3 {
+    font-weight: 600;
+}
+
+.custom-tiptap-wrapper .ProseMirror-focused {
+    outline: none;
+}
