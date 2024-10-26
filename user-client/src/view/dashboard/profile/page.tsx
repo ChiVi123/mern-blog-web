@@ -4,6 +4,7 @@ import { Alert, Button, Modal, TextInput } from 'flowbite-react';
 import { ChangeEventHandler, FormEventHandler, useEffect, useState } from 'react';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import { useAppDispatch } from '~core/store';
 import { IUserEntity, userActions, userSelectors } from '~modules/user';
@@ -86,10 +87,24 @@ function ProfilePage() {
                     onChange={handleChange}
                 />
 
-                <Button type='submit' gradientDuoTone='purpleToBlue' outline>
-                    Update
+                <Button
+                    type='submit'
+                    gradientDuoTone='purpleToBlue'
+                    outline
+                    disabled={actionType === 'fetchUpdateUser' && loading === 'pending'}
+                >
+                    {actionType === 'fetchUpdateUser' && loading === 'pending' ? 'Loading...' : 'Update'}
                 </Button>
+
+                {user?.isAdmin && (
+                    <Link to='/create-post'>
+                        <Button type='button' gradientDuoTone='purpleToPink' className='w-full'>
+                            Create a post
+                        </Button>
+                    </Link>
+                )}
             </form>
+
             <div className='text-red-500 flex justify-between mt-5'>
                 <span className='cursor-pointer' onClick={() => setOpenModal(true)}>
                     Delete Account

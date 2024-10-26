@@ -4,6 +4,7 @@ export interface IUserEntity {
     email: string;
     password: string;
     profilePicture: string;
+    isAdmin: boolean;
     createdAt: Date;
     updatedAt: Date;
 }
