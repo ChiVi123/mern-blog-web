@@ -1,3 +1,9 @@
 import { AxiosError } from 'axios';
 
-export const getAxiosError = (error: unknown) => (error instanceof AxiosError ? error.response?.data : error);
+const errorDefault = {
+    success: false,
+    statusCode: 500,
+    message: 'Internal Server Error',
+};
+
+export const getAxiosError = (error: unknown) => (error instanceof AxiosError ? error.response?.data : errorDefault);
