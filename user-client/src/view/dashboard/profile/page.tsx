@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 
 import { useAppDispatch } from '~core/store';
 import { IUserEntity, userActions, userSelectors } from '~modules/user';
-import { fetchDeleteUser, fetchUpdateUser } from '~modules/user/async';
+import { fetchDeleteUser, fetchSignOut, fetchUpdateUser } from '~modules/user/async';
 
 import { InputImage } from './components';
 
@@ -44,6 +44,10 @@ function ProfilePage() {
     const handleDeleteUser = async () => {
         dispatch(userActions.reset());
         await dispatch(fetchDeleteUser({ id: user!._id }));
+    };
+    const handleSignOut = async () => {
+        dispatch(userActions.reset());
+        await dispatch(fetchSignOut());
     };
 
     return (
@@ -90,7 +94,9 @@ function ProfilePage() {
                 <span className='cursor-pointer' onClick={() => setOpenModal(true)}>
                     Delete Account
                 </span>
-                <span className='cursor-pointer'>Sign Out</span>
+                <span className='cursor-pointer' onClick={handleSignOut}>
+                    Sign Out
+                </span>
             </div>
 
             {loading === 'fulfilled' && <Alert color='success'>User's profile updated successfully</Alert>}

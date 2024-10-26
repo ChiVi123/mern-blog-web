@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { fetchDeleteUser, fetchSignIn, fetchUpdateUser } from './async';
+import { fetchDeleteUser, fetchSignIn, fetchSignOut, fetchUpdateUser } from './async';
 import { IUserEntity } from './entity';
 
 interface IUserState extends IReduxState {
     data: IUserEntity | null;
-    type: '' | 'fetchSignIn' | 'fetchUpdateUser' | 'fetchDeleteUser';
+    type: '' | 'fetchSignIn' | 'fetchUpdateUser' | 'fetchDeleteUser' | 'fetchSignOut';
 }
 
 const initialState: IUserState = {
@@ -86,6 +86,24 @@ const userSlice = createSlice({
             }
         });
         builder.addCase(fetchDeleteUser.rejected, (state, { payload }) => {
+            state.loading = 'rejected';
+            state.error = payload!.message;
+        });
+
+        // fetchSignOut
+        builder.addCase(fetchSignOut.pending, (state) => {
+            state.type = 'fetchSignOut';
+            state.loading = 'pending';
+            state.error = undefined;
+        });
+        builder.addCase(fetchSignOut.fulfilled, (state, { payload }) => {
+            if (state.loading === 'pending') {
+                state.data = payload;
+                state.loading = 'idle';
+                state.error = undefined;
+            }
+        });
+        builder.addCase(fetchSignOut.rejected, (state, { payload }) => {
             state.loading = 'rejected';
             state.error = payload!.message;
         });

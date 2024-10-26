@@ -43,3 +43,14 @@ export const fetchDeleteUser = createAsyncThunk<null, { id: string }, GetThunkAP
         }
     },
 );
+export const fetchSignOut = createAsyncThunk<null, void, GetThunkAPIType>(
+    'user/fetchSignOut',
+    async (_, { rejectWithValue }) => {
+        try {
+            await http.post('/api/auth/sign-out');
+            return null;
+        } catch (error) {
+            return rejectWithValue(getAxiosError(error));
+        }
+    },
+);

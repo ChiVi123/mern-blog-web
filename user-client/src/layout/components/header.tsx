@@ -3,14 +3,21 @@ import { AiOutlineSearch } from 'react-icons/ai';
 import { FaMoon, FaSun } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
+
 import { useAppDispatch } from '~core/store';
 import { themeActions, themeSelectors } from '~modules/theme';
-import { userSelectors } from '~modules/user';
+import { userActions, userSelectors } from '~modules/user';
+import { fetchSignOut } from '~modules/user/async';
 
 function Header() {
     const user = useSelector(userSelectors.data);
     const theme = useSelector(themeSelectors.data);
     const dispatch = useAppDispatch();
+
+    const handleSignOut = async () => {
+        dispatch(userActions.reset());
+        await dispatch(fetchSignOut());
+    };
 
     return (
         <Navbar className='border-b-2'>
@@ -58,7 +65,7 @@ function Header() {
                             <Dropdown.Item>Profile</Dropdown.Item>
                         </Link>
                         <Dropdown.Divider />
-                        <Dropdown.Item>Sign Out</Dropdown.Item>
+                        <Dropdown.Item onClick={handleSignOut}>Sign Out</Dropdown.Item>
                     </Dropdown>
                 ) : (
                     <Link to='/sign-in'>
