@@ -40,7 +40,7 @@ export const signIn: RequestHandler = async (req, res, next) => {
             return;
         }
 
-        const token = jwt.sign({ id: validUser._id }, String(process.env.JWT_SECRET));
+        const token = jwt.sign({ id: validUser._id, isAdmin: validUser.isAdmin }, String(process.env.JWT_SECRET));
         const { password: _password, ...rest } = validUser._doc;
 
         res.status(200).cookie("access_token", token, { httpOnly: true }).json(rest);
@@ -60,7 +60,7 @@ export const google: RequestHandler = async (req, res, next) => {
     try {
         const user = await User.findOne({ email });
         if (user) {
-            const token = jwt.sign({ id: user._id }, String(process.env.JWT_SECRET));
+            const token = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, String(process.env.JWT_SECRET));
             const { password, ...rest } = user._doc;
             res.status(200).cookie("access_token", token, { httpOnly: true }).json(rest);
         } else {
@@ -75,7 +75,7 @@ export const google: RequestHandler = async (req, res, next) => {
 
             await newUser.save();
 
-            const token = jwt.sign({ id: newUser._id }, String(process.env.JWT_SECRET));
+            const token = jwt.sign({ id: newUser._id, isAdmin: newUser.isAdmin }, String(process.env.JWT_SECRET));
             const { password, ...rest } = newUser._doc;
 
             res.status(200).cookie("access_token", token, { httpOnly: true }).json(rest);
