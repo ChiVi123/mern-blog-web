@@ -2,7 +2,7 @@ import { Avatar, Button, Dropdown, Navbar, TextInput } from 'flowbite-react';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { FaMoon, FaSun } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 
 import { useAppDispatch } from '~core/store';
 import { themeActions, themeSelectors } from '~modules/theme';
@@ -12,6 +12,7 @@ import { fetchSignOut } from '~modules/user/async';
 function Header() {
     const user = useSelector(userSelectors.data);
     const theme = useSelector(themeSelectors.data);
+    const { pathname } = useLocation();
     const dispatch = useAppDispatch();
 
     const handleSignOut = async () => {
@@ -79,29 +80,17 @@ function Header() {
             </div>
 
             <Navbar.Collapse>
-                <NavLink to='/'>
-                    {({ isActive }) => (
-                        <Navbar.Link as='div' to='/' active={isActive}>
-                            Home
-                        </Navbar.Link>
-                    )}
-                </NavLink>
+                <Navbar.Link as={NavLink} to='/' active={pathname === '/'}>
+                    Home
+                </Navbar.Link>
 
-                <NavLink to='/about'>
-                    {({ isActive }) => (
-                        <Navbar.Link as='div' to='/' active={isActive}>
-                            About
-                        </Navbar.Link>
-                    )}
-                </NavLink>
+                <Navbar.Link as={NavLink} to='/about' active={pathname === '/about'}>
+                    About
+                </Navbar.Link>
 
-                <NavLink to='/projects'>
-                    {({ isActive }) => (
-                        <Navbar.Link as='div' to='/' active={isActive}>
-                            Projects
-                        </Navbar.Link>
-                    )}
-                </NavLink>
+                <Navbar.Link as={NavLink} to='/projects' active={pathname === '/projects'}>
+                    Projects
+                </Navbar.Link>
             </Navbar.Collapse>
         </Navbar>
     );
