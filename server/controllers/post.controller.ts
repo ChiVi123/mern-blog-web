@@ -1,4 +1,4 @@
-import { RequestHandler } from "express";
+import { Request, RequestHandler } from "express";
 import jwt from "jsonwebtoken";
 
 import Post from "~models/post.model";
@@ -34,6 +34,36 @@ export const create: RequestHandler = async (req, res, next) => {
     try {
         const savedPost = await newPost.save();
         res.status(201).json(savedPost);
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const getList: RequestHandler = async (req, res, next) => {
+    const startIndex = parseInt(req.query.start_index as string) || 0;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const sortDirection = (req.query.order as "asc" | "desc") === "asc" ? 1 : -1;
+
+    try {
+        const posts = await Post.find({
+            ...(req.query.user_id && { userId: req.query.user_id }),
+            ...(req.query.category && { category: req.query.category }),
+            ...(req.query.slug && { slug: req.query.slug }),
+            ...(req.query.post_id && { _id: req.query.post_id }),
+            ...(req.query.search_term && {
+                $or: [{ title: { $regex: req.query.search_term, $options: "i" } }, { content: { $regex: req.query.search_term, $options: "i" } }],
+            }),
+        })
+            .sort({ updatedAt: sortDirection })
+            .skip(startIndex)
+            .limit(limit);
+
+        const total = await Post.countDocuments();
+        const now = new Date();
+        const oneMonthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+        const lastMonthPosts = await Post.countDocuments({ createdAt: { $gte: oneMonthAgo } });
+
+        res.status(200).json({ posts, total, lastMonthPosts });
     } catch (error) {
         next(error);
     }
