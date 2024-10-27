@@ -80,3 +80,39 @@ export const deleteUser: RequestHandler = async (req, res, next) => {
         next(error);
     }
 };
+export const userList: RequestHandler = async (req, res, next) => {
+    const user = (req as unknown as IUserRequest)?.user;
+
+    if (!user.isAdmin) {
+        return next(getErrorHandler(403, "You are not allowed to updated a post"));
+    }
+
+    const startIndex = parseInt(req.query.start_index as string) || 0;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const sortDirection = (req.query.order as "asc" | "desc") === "asc" ? 1 : -1;
+
+    try {
+        const users = await User.find().sort({ createdAt: sortDirection }).skip(startIndex).limit(limit);
+
+        const usersWithoutPassword = users.map((user) => {
+            const { password, ...rest } = user._doc;
+            return rest;
+        });
+
+        const totalUsers = await User.countDocuments();
+        const now = new Date();
+        const oneMonthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+
+        const lastMonthUsers = await User.countDocuments({
+            createdAt: { $gte: oneMonthAgo },
+        });
+
+        res.status(200).json({
+            users: usersWithoutPassword,
+            totalUsers,
+            lastMonthUsers,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
