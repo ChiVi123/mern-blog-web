@@ -7,7 +7,7 @@ import { IUserEntity } from "~types";
 import { getErrorHandler } from "~utils";
 
 interface IUserRequest extends Request {
-    user: jwt.JwtPayload & { id: string };
+    user: jwt.JwtPayload & IUserEntity & { id: string };
 }
 export const updateUser: RequestHandler = async (req, res, next) => {
     const user = (req as unknown as IUserRequest)?.user;
@@ -69,7 +69,7 @@ export const updateUser: RequestHandler = async (req, res, next) => {
 export const deleteUser: RequestHandler = async (req, res, next) => {
     const user = (req as unknown as IUserRequest)?.user;
 
-    if (user.id !== (req.params as { userId: string }).userId) {
+    if (!user.isAdmin && user.id !== (req.params as { userId: string }).userId) {
         return next(getErrorHandler(403, "You are not allowed to updated this user"));
     }
 
