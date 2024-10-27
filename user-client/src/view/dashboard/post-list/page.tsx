@@ -4,7 +4,7 @@ import { HiOutlineExclamationCircle } from 'react-icons/hi';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { IPostEntity, postListRepo } from '~modules/post';
+import { deletePostRepo, IPostEntity, postListRepo } from '~modules/post';
 import { userSelectors } from '~modules/user';
 
 function PostListPage() {
@@ -43,25 +43,14 @@ function PostListPage() {
         }
     };
     const handleDeletePost = async () => {
-        // setShowModal(false);
-        // try {
-        //   const res = await fetch(
-        //     `/api/post/deletepost/${postIdToDelete}/${currentUser._id}`,
-        //     {
-        //       method: 'DELETE',
-        //     }
-        //   );
-        //   const data = await res.json();
-        //   if (!res.ok) {
-        //     console.log(data.message);
-        //   } else {
-        //     setUserPosts((prev) =>
-        //       prev.filter((post) => post._id !== postIdToDelete)
-        //     );
-        //   }
-        // } catch (error) {
-        //   console.log(error.message);
-        // }
+        setShowModal(false);
+
+        const result = await deletePostRepo(postIdToDelete, user!._id);
+        if (typeof result === 'string') {
+            setPosts((prev) => prev.filter((item) => item._id !== postIdToDelete));
+            return;
+        }
+        console.log(result);
     };
 
     return (

@@ -18,3 +18,11 @@ export const postListRepo = async (params: Record<string, string | number | unde
         return getAxiosError(error);
     }
 };
+export const deletePostRepo = async (postId: string, userId: string) => {
+    try {
+        const res = await http.delete<string>(`/api/post/delete/${postId}/${userId}`);
+        return res.data;
+    } catch (error) {
+        return getAxiosError(error);
+    }
+};
