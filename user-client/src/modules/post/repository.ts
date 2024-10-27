@@ -26,3 +26,11 @@ export const deletePostRepo = async (postId: string, userId: string) => {
         return getAxiosError(error);
     }
 };
+export const updatePostRepo = async (postId: string, userId: string, data: Record<string, unknown>) => {
+    try {
+        const res = await http.put<IPostEntity>(`/api/post/update/${postId}/${userId}`, data);
+        return res.data;
+    } catch (error) {
+        return getAxiosError(error);
+    }
+};

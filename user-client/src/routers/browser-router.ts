@@ -13,6 +13,7 @@ import { projectsRouter } from '~view/projects/router';
 import { searchRouter } from '~view/search/router';
 import { signInRouter } from '~view/sign-in/router';
 import { signUpRouter } from '~view/sign-up/router';
+import updatePostRouter from '~view/update-post/router';
 
 import { AdminRoute, PrivateRoute } from './components';
 
@@ -31,7 +32,7 @@ export const browserRouter = createBrowserRouter([
             {
                 path: '',
                 Component: AdminRoute,
-                children: [createPostRouter],
+                children: [createPostRouter, updatePostRouter],
             },
         ],
     },

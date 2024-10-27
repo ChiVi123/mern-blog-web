@@ -11,10 +11,11 @@ import { memo } from 'react';
 import './text-editor.css';
 
 interface IProps {
+    defaultValue?: string;
     onChange?: (value: string) => void;
 }
 
-function TextEditor({ onChange }: IProps) {
+function TextEditor({ defaultValue, onChange }: IProps) {
     const editor = useEditor({
         extensions: [
             StarterKit,
@@ -22,7 +23,7 @@ function TextEditor({ onChange }: IProps) {
             Link.configure({ openOnClick: false }),
             Placeholder.configure({ placeholder: 'Write something...' }),
         ],
-        content: '',
+        content: defaultValue || '',
         onUpdate: (props) => {
             if (onChange) {
                 onChange(props.editor.getHTML());
@@ -32,14 +33,14 @@ function TextEditor({ onChange }: IProps) {
 
     if (!editor) {
         return (
-            <div className='flex justify-center items-center '>
+            <div className='flex justify-center items-center'>
                 <Spinner aria-label='Waiting editor loading...' size='xl' />
             </div>
         );
     }
 
     return (
-        <div className='h-72 mb-12 border'>
+        <div className='h-72 mb-12 border overflow-y-auto'>
             <Menubar editor={editor} />
             <EditorContent editor={editor} className='custom-tiptap-wrapper' />
         </div>
