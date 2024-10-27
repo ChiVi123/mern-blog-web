@@ -40,7 +40,7 @@ function TextEditor({ defaultValue, onChange }: IProps) {
     }
 
     return (
-        <div className='h-72 mb-12 border overflow-y-auto'>
+        <div className='h-72 mb-12 border'>
             <Menubar editor={editor} />
             <EditorContent editor={editor} className='custom-tiptap-wrapper' />
         </div>

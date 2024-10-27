@@ -1,7 +1,10 @@
 import { Button, Spinner } from 'flowbite-react';
 import { Link, useLoaderData } from 'react-router-dom';
+
 import { CallToAction, PostCard } from '~components';
 import { IPostEntity } from '~modules/post';
+
+import './style.css';
 
 function PostDetailPage() {
     const loader = useLoaderData() as { post: IPostEntity; recentPosts: IPostEntity[] } | undefined;
