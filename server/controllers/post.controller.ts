@@ -68,3 +68,17 @@ export const getList: RequestHandler = async (req, res, next) => {
         next(error);
     }
 };
+export const deletePost: RequestHandler = async (req, res, next) => {
+    const user = (req as unknown as IUserRequest)?.user;
+
+    if (!user.isAdmin) {
+        return next(getErrorHandler(403, "You are not allowed to create a post"));
+    }
+
+    try {
+        await Post.findByIdAndDelete(req.params.id);
+        res.status(200).json("The post has been deleted");
+    } catch (error) {
+        next(error);
+    }
+};
