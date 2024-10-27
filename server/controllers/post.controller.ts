@@ -71,12 +71,16 @@ export const getList: RequestHandler = async (req, res, next) => {
 export const deletePost: RequestHandler = async (req, res, next) => {
     const user = (req as unknown as IUserRequest)?.user;
 
+    if (user.id !== (req.params as { userId: string }).userId) {
+        return next(getErrorHandler(403, "You are not allowed to updated a post"));
+    }
+
     if (!user.isAdmin) {
-        return next(getErrorHandler(403, "You are not allowed to create a post"));
+        return next(getErrorHandler(403, "You are not allowed to updated a post"));
     }
 
     try {
-        await Post.findByIdAndDelete(req.params.id);
+        await Post.findByIdAndDelete(req.params.postId);
         res.status(200).json("The post has been deleted");
     } catch (error) {
         next(error);
