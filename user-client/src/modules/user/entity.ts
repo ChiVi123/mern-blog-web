@@ -8,3 +8,8 @@ export interface IUserEntity {
     createdAt: Date;
     updatedAt: Date;
 }
+export interface IUserListData {
+    users: IUserEntity[];
+    totalUsers: number;
+    lastMonthUsers: number;
+}
