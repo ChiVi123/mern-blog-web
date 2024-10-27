@@ -42,6 +42,9 @@
             "~helper": ["./src/shared/helper"],
             "~helper/*": ["./src/shared/helper/*"],
 
+            "~hook": ["./src/shared/hook"],
+            "~hook/*": ["./src/shared/hook/*"],
+
             "~view/*": ["./src/view/*"]
         },
 

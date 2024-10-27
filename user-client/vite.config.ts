@@ -21,6 +21,7 @@ export default defineConfig({
             '~routers': path.resolve(__dirname, './src/routers'),
             '~components': path.resolve(__dirname, './src/shared/components'),
             '~helper': path.resolve(__dirname, './src/shared/helper'),
+            '~hook': path.resolve(__dirname, './src/shared/hook'),
             '~view': path.resolve(__dirname, './src/view'),
         },
     },
