@@ -4,8 +4,6 @@ import { Link, useLoaderData } from 'react-router-dom';
 import { CallToAction, PostCard } from '~components';
 import { IPostEntity } from '~modules/post';
 
-import './style.css';
-
 function PostDetailPage() {
     const loader = useLoaderData() as { post: IPostEntity; recentPosts: IPostEntity[] } | undefined;
 
@@ -39,7 +37,7 @@ function PostDetailPage() {
             </div>
 
             <div
-                className='p-3 max-w-2xl mx-auto w-full post-content'
+                className='p-3 max-w-4xl mx-auto w-full post-content'
                 dangerouslySetInnerHTML={{ __html: loader.post.content }}
             ></div>
 

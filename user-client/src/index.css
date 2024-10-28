@@ -11,4 +11,127 @@
 
         @apply size-[1px] p-0 m-0 border-[0] whitespace-normal overflow-hidden;
     }
+
+    .custom-tiptap-wrapper {
+        height: calc(288px - 50px);
+        overflow-y: auto;
+    }
+
+    .custom-tiptap-wrapper .tiptap {
+        padding: 12px 15px;
+    }
+
+    .custom-tiptap-wrapper .tiptap p.is-editor-empty:first-child::before {
+        color: #adb5bd;
+        content: attr(data-placeholder);
+        float: left;
+        height: 0;
+        pointer-events: none;
+    }
+
+    .custom-tiptap-wrapper .ProseMirror-focused {
+        outline: none;
+    }
+
+    .post-content ul {
+        list-style: disc;
+    }
+
+    .post-content ol {
+        list-style: decimal;
+    }
+
+    .post-content ul,
+    .post-content ol {
+        margin-left: 16px;
+    }
+
+    .post-content li {
+        margin-bottom: 0.5rem;
+    }
+
+    .post-content > p,
+    .post-content > * > p,
+    .post-content > pre,
+    .post-content > * > pre {
+        margin-bottom: 2rem;
+    }
+
+    .post-content h1,
+    .post-content h2,
+    .post-content h3 {
+        margin: 1.5rem 0;
+        font-family: sans-serif;
+    }
+
+    .post-content h1 {
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+
+    .post-content h2 {
+        font-size: 1.4rem;
+        font-weight: 400;
+    }
+
+    .post-content h3 {
+        font-size: 1rem;
+    }
+
+    .post-content img {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .post-content a {
+        color: rgb(73, 149, 199);
+        text-decoration: none;
+    }
+
+    .post-content a:hover {
+        text-decoration: underline;
+    }
+
+    .dark .post-content a {
+        color: red;
+    }
+
+    .post-content mark {
+        padding: 2px 4px;
+        border-radius: 4px;
+        font-size: 90%;
+        font-weight: 500;
+
+        @apply bg-cyan-100 text-cyan-900;
+    }
+
+    .dark .post-content mark {
+        @apply bg-cyan-400 text-gray-700;
+    }
+
+    .post-content p code {
+        font-weight: 800;
+    }
+
+    .post-content p code::before {
+        content: '`';
+    }
+
+    .post-content p code::after {
+        content: '`';
+    }
+
+    .post-content pre {
+        padding: 32px 16px;
+        border-radius: 8px;
+        @apply bg-gray-50;
+    }
+
+    .post-content pre code {
+        @apply block overflow-x-auto;
+    }
+
+    .dark .post-content pre {
+        @apply bg-gray-700;
+    }
 }

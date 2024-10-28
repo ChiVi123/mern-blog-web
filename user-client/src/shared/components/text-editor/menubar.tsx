@@ -2,7 +2,8 @@ import { Editor } from '@tiptap/react';
 import clsx from 'clsx';
 import { Button, ButtonProps, Select } from 'flowbite-react';
 import { ChangeEventHandler, useCallback } from 'react';
-import { FaBold, FaItalic, FaLink, FaListUl, FaUnderline } from 'react-icons/fa6';
+import { AiFillHighlight } from 'react-icons/ai';
+import { FaBold, FaCode, FaItalic, FaLink, FaListUl, FaUnderline } from 'react-icons/fa6';
 import { ImListNumbered } from 'react-icons/im';
 import { MdFormatClear } from 'react-icons/md';
 
@@ -127,6 +128,26 @@ function Menubar({ editor }: IProps) {
                     ),
                 })}
             </Button.Group>
+
+            {buttonEditor({
+                onClick: () => editor.chain().focus().toggleHighlight().run(),
+                children: (
+                    <>
+                        <span className='visually-hidden'>ordered list</span>
+                        <AiFillHighlight className={iconClass(editor.isActive('highlight'))} />
+                    </>
+                ),
+            })}
+
+            {buttonEditor({
+                onClick: () => editor.chain().focus().toggleCode().run(),
+                children: (
+                    <>
+                        <span className='visually-hidden'>ordered list</span>
+                        <FaCode className={iconClass(editor.isActive('code'))} />
+                    </>
+                ),
+            })}
 
             {buttonEditor({
                 onClick: () => {
