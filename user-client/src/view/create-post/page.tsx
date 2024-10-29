@@ -58,8 +58,11 @@ function CreatePostPage() {
                     <Select ref={(ref) => (inputRefs.current[1] = ref!)} id='category' name='category'>
                         <option value='uncategorized'>Select a category</option>
                         <option value='javascript'>JavaScript</option>
+                        <option value='typescript'>Typescript</option>
                         <option value='reactjs'>React.js</option>
+                        <option value='reactjs-ts'>React.js with Typescript</option>
                         <option value='nextjs'>Next.js</option>
+                        <option value='nextjs-ts'>React.js with Typescript</option>
                     </Select>
                 </div>
 

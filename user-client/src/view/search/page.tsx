@@ -112,10 +112,13 @@ function SearchPage() {
                     <div className='flex items-center gap-2'>
                         <label className='font-semibold'>Category:</label>
                         <Select onChange={handleChange} value={sidebarData.category} id='category'>
-                            <option value='uncategorized'>Uncategorized</option>
-                            <option value='reactjs'>React.js</option>
-                            <option value='nextjs'>Next.js</option>
+                            <option value='uncategorized'>Select a category</option>
                             <option value='javascript'>JavaScript</option>
+                            <option value='typescript'>Typescript</option>
+                            <option value='reactjs'>React.js</option>
+                            <option value='reactjs-ts'>React.js with Typescript</option>
+                            <option value='nextjs'>Next.js</option>
+                            <option value='nextjs-ts'>React.js with Typescript</option>
                         </Select>
                     </div>
                     <Button type='submit' outline gradientDuoTone='purpleToPink'>
