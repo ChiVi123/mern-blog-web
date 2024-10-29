@@ -23,7 +23,7 @@ function DashboardSidebar() {
                 <Sidebar.ItemGroup>
                     {currentUser && currentUser.isAdmin && (
                         <Sidebar.Item as={Link} to='/dashboard' active={pathname === '/dashboard'} icon={HiChartPie}>
-                            Profile
+                            Dashboard
                         </Sidebar.Item>
                     )}
 

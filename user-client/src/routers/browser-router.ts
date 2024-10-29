@@ -6,6 +6,7 @@ import createPostRouter from '~view/create-post/router';
 import { dashboardCommentListRouter } from '~view/dashboard/comment-list/router';
 import { dashboardPostListRouter } from '~view/dashboard/post-list/router';
 import { dashboardProfileRouter } from '~view/dashboard/profile/router';
+import dashboardRouter from '~view/dashboard/router';
 import { dashboardUserListRouter } from '~view/dashboard/user-list/router';
 import { homeRouter } from '~view/home/router';
 import { postDetailRouter } from '~view/post-detail/router';
@@ -44,6 +45,7 @@ export const browserRouter = createBrowserRouter([
                 path: '/dashboard',
                 Component: PrivateRoute,
                 children: [
+                    dashboardRouter,
                     dashboardProfileRouter,
                     dashboardPostListRouter,
                     dashboardUserListRouter,
