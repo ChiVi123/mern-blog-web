@@ -13,7 +13,7 @@ interface IResolveGoogle {
     googlePhotoUrl: string;
 }
 
-export const signupRepo = async (formData: IUserForm) => {
+export const signUpRepo = async (formData: IUserForm) => {
     try {
         const res = await http.post('/api/auth/signup', formData);
         return res.data;

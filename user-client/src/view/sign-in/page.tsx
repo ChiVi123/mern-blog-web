@@ -4,13 +4,8 @@ import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { ButtonOauth } from '~components';
 import { useAppDispatch } from '~core/store';
-import { userSelectors } from '~modules/user';
+import { IUserEntity, userSelectors } from '~modules/user';
 import { fetchSignIn } from '~modules/user/async';
-
-interface IUserForm {
-    email: string;
-    password: string;
-}
 
 function SignInPage() {
     const inputRefs = useRef<HTMLInputElement[]>([]);
@@ -28,7 +23,7 @@ function SignInPage() {
         e.preventDefault();
         const data = inputRefs.current.reduce(
             (prev, current) => ({ ...prev, [current.name]: current.value }),
-            {} as IUserForm,
+            {} as IUserEntity,
         );
         await dispatch(fetchSignIn(data));
     };

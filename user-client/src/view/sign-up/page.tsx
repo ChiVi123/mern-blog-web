@@ -2,7 +2,7 @@ import { Alert, Button, Label, Spinner, TextInput } from 'flowbite-react';
 import { FormEventHandler, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ButtonOauth } from '~components';
-import { signupRepo } from '~modules/user';
+import { signUpRepo } from '~modules/user';
 
 interface IUserForm {
     username: string;
@@ -25,7 +25,7 @@ function SignUpPage() {
         setLoading(true);
         setErrorMessage(null);
 
-        const result = await signupRepo(data);
+        const result = await signUpRepo(data);
 
         if ('success' in result && !result.success) {
             setErrorMessage(result.message);
