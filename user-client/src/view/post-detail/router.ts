@@ -14,6 +14,8 @@ export const postDetailRouter: RouteObject = {
             return;
         }
 
+        document.title = `${resultBySlug.posts[0].title} | cVi's Blog Application`;
+
         if ('success' in resultRecent) {
             console.log(resultRecent);
             return;
