@@ -4,12 +4,11 @@ import "dotenv/config";
 import cookieParser from "cookie-parser";
 import express, { Response } from "express";
 import mongoose from "mongoose";
-
 import path from "path";
-import authRoutes from "~routes/auth.route";
-import commentRoutes from "~routes/comment.route";
-import postRoutes from "~routes/post.route";
-import userRoutes from "~routes/user.route";
+
+import { authRoutes, commentRoutes, postRoutes, userRoutes } from "~routes";
+
+const rootDir = path.resolve();
 
 // Valid process env is here
 
@@ -31,9 +30,9 @@ app.use("/api/post", postRoutes);
 app.use("/api/user", userRoutes);
 
 // file front end
-app.use(express.static(path.join(__dirname, "/user-client/dist")));
+app.use(express.static(path.join(rootDir, "user-client", "dist")));
 app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "user-client", "dist", "index.html"));
+    res.sendFile(path.join(rootDir, "user-client", "dist", "index.html"));
 });
 
 // middleware
