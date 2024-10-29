@@ -1,6 +1,6 @@
 import { http } from '~core';
 import { getAxiosError } from '~helper';
-import { ICommentEntity } from './entity';
+import { ICommentEntity, ICommentListData } from './entity';
 
 export const createCommentRepo = async (data: Record<string, unknown>) => {
     try {
@@ -37,6 +37,14 @@ export const editCommentRepo = async (commentId: string, data: { content: string
 export const deleteCommentRepo = async (commentId: string) => {
     try {
         const res = await http.delete<string>(`/api/comment/delete/${commentId}`);
+        return res.data;
+    } catch (error) {
+        return getAxiosError(error);
+    }
+};
+export const queryCommentRepo = async (params: Record<string, string | number | undefined>) => {
+    try {
+        const res = await http.get<ICommentListData>('/api/comment', { params });
         return res.data;
     } catch (error) {
         return getAxiosError(error);

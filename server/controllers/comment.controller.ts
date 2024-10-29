@@ -102,3 +102,27 @@ export const deleteComment: RequestHandler = async (req, res, next) => {
         next(error);
     }
 };
+export const queryComment: RequestHandler = async (req, res, next) => {
+    const user = (req as unknown as ICommentRequest)?.user;
+
+    if (!user.isAdmin) {
+        return next(getErrorHandler(403, "You are not allowed to get all comments"));
+    }
+
+    const startIndex = parseInt(req.query.start_index as string) || 0;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const sortDirection = req.query.sort === "desc" ? -1 : 1;
+    const now = new Date();
+    const oneMonthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+
+    try {
+        const comments = await Comment.find().sort({ createdAt: sortDirection }).skip(startIndex).limit(limit).populate("userId").populate("postId");
+        const total = await Comment.countDocuments();
+        const lastMonthComments = await Comment.countDocuments({
+            createdAt: { $gte: oneMonthAgo },
+        });
+        res.status(200).json({ comments, total, lastMonthComments });
+    } catch (error) {
+        next(error);
+    }
+};
