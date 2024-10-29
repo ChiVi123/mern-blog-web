@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import express, { Response } from "express";
 import mongoose from "mongoose";
 
+import path from "path";
 import authRoutes from "~routes/auth.route";
 import commentRoutes from "~routes/comment.route";
 import postRoutes from "~routes/post.route";
@@ -28,6 +29,12 @@ app.use("/api/auth", authRoutes);
 app.use("/api/comment", commentRoutes);
 app.use("/api/post", postRoutes);
 app.use("/api/user", userRoutes);
+
+// file front end
+app.use(express.static(path.join(__dirname, "/user-client/dist")));
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "user-client", "dist", "index.html"));
+});
 
 // middleware
 app.use((err: Error, _req: any, res: Response, _next: any) => {

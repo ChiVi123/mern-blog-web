@@ -6,7 +6,8 @@
     "scripts": {
         "start": "tsc && node dist/index.js",
         "dev": "nodemon server/index.ts",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "npm install && npm install --prefix user-client && npm run build --prefix user-client"
     },
     "keywords": [],
     "author": "",
