@@ -6,6 +6,7 @@ import express, { Response } from "express";
 import mongoose from "mongoose";
 
 import authRoutes from "~routes/auth.route";
+import commentRoutes from "~routes/comment.route";
 import postRoutes from "~routes/post.route";
 import userRoutes from "~routes/user.route";
 
@@ -24,6 +25,7 @@ app.use(cookieParser());
 
 // routes
 app.use("/api/auth", authRoutes);
+app.use("/api/comment", commentRoutes);
 app.use("/api/post", postRoutes);
 app.use("/api/user", userRoutes);
 

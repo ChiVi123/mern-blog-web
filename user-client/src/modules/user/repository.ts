@@ -1,6 +1,6 @@
 import { http } from '~core';
 import { getAxiosError } from '~helper';
-import { IUserListData } from './entity';
+import { IUserEntity, IUserListData } from './entity';
 
 interface IUserForm {
     username: string;
@@ -40,6 +40,14 @@ export const allUserRepo = async (params: Record<string, string | number | undef
 export const deleteUserRepo = async (id: string) => {
     try {
         const res = await http.delete<string>(`/api/user/delete/${id}`);
+        return res.data;
+    } catch (error) {
+        return getAxiosError(error);
+    }
+};
+export const userInfo = async (id: string) => {
+    try {
+        const res = await http.get<IUserEntity>(`/api/user/${id}`);
         return res.data;
     } catch (error) {
         return getAxiosError(error);

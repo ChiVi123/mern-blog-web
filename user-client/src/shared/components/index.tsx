@@ -1,5 +1,6 @@
 export { default as ButtonOauth } from './button-oauth';
 export { default as CallToAction } from './call-to-action';
+export { default as CommentSection } from './comment-section';
 export { default as InputImageField } from './input-image-field';
 export { default as PostCard } from './post-card';
 export { default as ScrollToTop } from './scroll-to-top';

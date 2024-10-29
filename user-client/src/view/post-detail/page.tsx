@@ -1,7 +1,7 @@
 import { Button, Spinner } from 'flowbite-react';
 import { Link, useLoaderData } from 'react-router-dom';
 
-import { CallToAction, PostCard } from '~components';
+import { CallToAction, CommentSection, PostCard } from '~components';
 import { IPostEntity } from '~modules/post';
 
 function PostDetailPage() {
@@ -45,7 +45,7 @@ function PostDetailPage() {
                 <CallToAction />
             </div>
 
-            {/* <CommentSection postId={loader.post.post._id} /> */}
+            <CommentSection postId={loader.post._id} />
 
             <div className='flex flex-col justify-center items-center mb-5'>
                 <h1 className='text-xl mt-5'>Recent articles</h1>
