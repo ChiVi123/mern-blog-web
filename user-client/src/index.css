@@ -134,4 +134,8 @@
     .dark .post-content pre {
         @apply bg-gray-700;
     }
+
+    .font-sign {
+        font-family: 'MonteCarlo', serif;
+    }
 }
