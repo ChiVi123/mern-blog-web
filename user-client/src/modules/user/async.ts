@@ -1,8 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { http } from '~core';
-
 import { getAxiosError } from '~helper';
+
 import { IUserEntity } from './entity';
 
 type GetThunkAPIType = { rejectValue: IRejectValue };

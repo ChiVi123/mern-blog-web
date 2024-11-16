@@ -1,12 +1,14 @@
 import "dotenv-expand/config";
 import "dotenv/config";
+import "reflect-metadata";
 
 import cookieParser from "cookie-parser";
 import express, { Response } from "express";
 import mongoose from "mongoose";
 import path from "path";
 
-import { authRoutes, commentRoutes, postRoutes, userRoutes } from "~routes";
+import { AuthController, CommentController, PostController, UserController } from "~controllers";
+import { defineRoutes } from "~core";
 
 const rootDir = path.resolve();
 
@@ -24,10 +26,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // routes
-app.use("/api/auth", authRoutes);
-app.use("/api/comment", commentRoutes);
-app.use("/api/post", postRoutes);
-app.use("/api/user", userRoutes);
+defineRoutes([AuthController, CommentController, PostController, UserController], app);
 
 // file front end
 app.use(express.static(path.join(rootDir, "user-client", "dist")));
