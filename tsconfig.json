@@ -4,12 +4,23 @@
         "module": "commonjs",
         "baseUrl": "./server",
         "paths": {
-            "~controllers/*": ["controllers/*"],
+            "~controllers": ["controllers"],
+            "~controllers/index.ts": ["controllers/index.ts"],
+
+            "~core": ["core"],
+            "~core/index.ts": ["core/index.ts"],
+
+            "~decorator": ["decorator"],
+            "~decorator/index.ts": ["decorator/index.ts"],
+
+            "~middleware": ["middleware"],
+            "~middleware/index.ts": ["middleware/index.ts"],
+
             "~models/*": ["models/*"],
-            "~routes": ["routes"],
-            "~routes/*": ["routes/*"],
+
             "~types": ["types"],
             "~types/*": ["types/*"],
+
             "~utils": ["utils"],
             "~utils/*": ["utils/*"]
         },
@@ -18,8 +29,11 @@
         "removeComments": true,
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
         "strict": true,
-        "skipLibCheck": true
+        "skipLibCheck": true,
+        "types": ["reflect-metadata"]
     },
     "ts-node": {
         "require": ["tsconfig-paths/register"]
