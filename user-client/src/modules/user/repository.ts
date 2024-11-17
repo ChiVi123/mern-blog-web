@@ -15,7 +15,7 @@ interface IResolveGoogle {
 
 export const signUpRepo = async (formData: IUserForm) => {
     try {
-        const res = await http.post('/api/auth/signup', formData);
+        const res = await http.post('/api/auth/sign-up', formData);
         return res.data;
     } catch (error) {
         return getAxiosError(error);
