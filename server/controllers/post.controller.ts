@@ -1,15 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import jwt from "jsonwebtoken";
 
 import { Controller, Route } from "~decorator";
 import { verifyToken } from "~middleware";
 import Post from "~models/post.model";
-import { IUserEntity } from "~types";
 import { getErrorHandler } from "~utils";
-
-interface IUserRequest extends Request {
-    user: jwt.JwtPayload & IUserEntity & { id: string };
-}
 
 @Controller("/api/post")
 class PostController {
@@ -46,7 +40,7 @@ class PostController {
 
     @Route("post", "/create", verifyToken)
     async create(req: Request, res: Response, next: NextFunction) {
-        const user = (req as unknown as IUserRequest)?.user;
+        const user = req.user!;
 
         if (!user.isAdmin) {
             return next(getErrorHandler(403, "You are not allowed to create a post"));
@@ -77,7 +71,7 @@ class PostController {
 
     @Route("delete", "/delete/:postId/:userId", verifyToken)
     async deletePost(req: Request, res: Response, next: NextFunction) {
-        const user = (req as unknown as IUserRequest)?.user;
+        const user = req.user!;
 
         if (user.id !== req.params.userId) {
             return next(getErrorHandler(403, "You are not allowed to delete a post"));
@@ -97,7 +91,7 @@ class PostController {
 
     @Route("put", "/update/:postId/:userId", verifyToken)
     async updatePost(req: Request, res: Response, next: NextFunction) {
-        const user = (req as unknown as IUserRequest)?.user;
+        const user = req.user!;
 
         if (user.id !== (req.params as { userId: string }).userId) {
             return next(getErrorHandler(403, "You are not allowed to updated a post"));

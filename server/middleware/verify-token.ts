@@ -1,13 +1,23 @@
-import { Request, RequestHandler } from "express";
+import { NextFunction, Request } from "express";
 import jwt from "jsonwebtoken";
+import { ObjectId } from "mongoose";
 
 import { getErrorHandler } from "~utils";
 
-interface IUserRequest extends Request {
-    user: string | jwt.JwtPayload | undefined;
+declare global {
+    interface JwtPayload {
+        id: ObjectId;
+        isAdmin: boolean;
+    }
+
+    namespace Express {
+        interface Request {
+            user?: jwt.JwtPayload | undefined;
+        }
+    }
 }
 
-export const verifyToken: RequestHandler = async (req, _res, next) => {
+export const verifyToken = async (req: Request, _res: any, next: NextFunction) => {
     const token: string = req.cookies.access_token;
 
     if (!token) {
@@ -15,10 +25,10 @@ export const verifyToken: RequestHandler = async (req, _res, next) => {
     }
 
     jwt.verify(token, process.env.JWT_SECRET || "", (err, user) => {
-        if (err) {
+        if (err || !user || typeof user === "string") {
             return next(getErrorHandler(401, "Unauthorized"));
         }
-        (req as IUserRequest).user = user;
+        req.user = user;
         next();
     });
 };

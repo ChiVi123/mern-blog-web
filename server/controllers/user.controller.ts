@@ -1,6 +1,5 @@
 import bcryptjs from "bcryptjs";
-import { NextFunction, Request, RequestHandler, Response } from "express";
-import jwt from "jsonwebtoken";
+import { NextFunction, Request, Response } from "express";
 
 import { Controller, Route } from "~decorator";
 import { verifyToken } from "~middleware";
@@ -8,28 +7,11 @@ import User from "~models/user.model";
 import { IUserEntity } from "~types";
 import { getErrorHandler } from "~utils";
 
-interface IUserRequest extends Request {
-    user: jwt.JwtPayload & IUserEntity & { id: string };
-}
-
-export const userInfo: RequestHandler = async (req, res, next) => {
-    try {
-        const user = await User.findById(req.params.userId);
-        if (!user) {
-            return next(getErrorHandler(404, "User not found"));
-        }
-        const { password, ...rest } = user._doc;
-        res.status(200).json(rest);
-    } catch (error) {
-        next(error);
-    }
-};
-
 @Controller("/api/user")
 class UserController {
     @Route("put", "/update/:userId", verifyToken)
     async updateUser(req: Request, res: Response, next: NextFunction) {
-        const user = (req as unknown as IUserRequest)?.user;
+        const user = req.user!;
 
         if (user.id !== (req.params as { userId: string }).userId) {
             return next(getErrorHandler(403, "You are not allowed to updated this user"));
@@ -88,7 +70,7 @@ class UserController {
 
     @Route("delete", "/delete/:userId", verifyToken)
     async deleteUser(req: Request, res: Response, next: NextFunction) {
-        const user = (req as unknown as IUserRequest)?.user;
+        const user = req.user!;
 
         if (!user.isAdmin && user.id !== (req.params as { userId: string }).userId) {
             return next(getErrorHandler(403, "You are not allowed to updated this user"));
@@ -104,7 +86,7 @@ class UserController {
 
     @Route("get", "/", verifyToken)
     async userList(req: Request, res: Response, next: NextFunction) {
-        const user = (req as unknown as IUserRequest)?.user;
+        const user = req.user!;
 
         if (!user.isAdmin) {
             return next(getErrorHandler(403, "You are not allowed to updated a post"));

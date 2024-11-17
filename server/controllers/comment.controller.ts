@@ -1,22 +1,16 @@
 import { NextFunction, Request, Response } from "express";
-import jwt from "jsonwebtoken";
 
 import { Controller, Route } from "~decorator";
 import { verifyToken } from "~middleware";
 import Comment from "~models/comment.model";
-import { IUserEntity } from "~types";
 import { getErrorHandler } from "~utils";
-
-interface ICommentRequest extends Request {
-    user: jwt.JwtPayload & IUserEntity & { id: string };
-}
 
 @Controller("/api/comment")
 class CommentController {
     @Route("post", "/create", verifyToken)
     async create(req: Request, res: Response, next: NextFunction) {
         const { postId, userId, content } = req.body;
-        const user = (req as unknown as ICommentRequest)?.user;
+        const user = req.user!;
 
         if (userId !== user.id) {
             next(getErrorHandler(403, "You are not allowed to create this comment"));
@@ -48,7 +42,7 @@ class CommentController {
 
     @Route("put", "/like:id", verifyToken)
     async likeComment(req: Request, res: Response, next: NextFunction) {
-        const user = (req as unknown as ICommentRequest)?.user;
+        const user = req.user!;
 
         try {
             const comment = await Comment.findById(req.params.commentId);
@@ -72,7 +66,7 @@ class CommentController {
 
     @Route("put", "/edit/:commentId", verifyToken)
     async edit(req: Request, res: Response, next: NextFunction) {
-        const user = (req as unknown as ICommentRequest)?.user;
+        const user = req.user!;
 
         try {
             const comment = await Comment.findById(req.params.commentId);
@@ -98,7 +92,7 @@ class CommentController {
 
     @Route("delete", "/delete/:commentId", verifyToken)
     async delete(req: Request, res: Response, next: NextFunction) {
-        const user = (req as unknown as ICommentRequest)?.user;
+        const user = req.user!;
 
         try {
             const comment = await Comment.findById(req.params.commentId);
@@ -117,7 +111,7 @@ class CommentController {
 
     @Route("get", "/", verifyToken)
     async queryComment(req: Request, res: Response, next: NextFunction) {
-        const user = (req as unknown as ICommentRequest)?.user;
+        const user = req.user!;
 
         if (!user.isAdmin) {
             return next(getErrorHandler(403, "You are not allowed to get all comments"));
