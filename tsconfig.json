@@ -4,6 +4,8 @@
         "module": "commonjs",
         "baseUrl": "./server",
         "paths": {
+            "~config/*": ["config/*"],
+
             "~controllers": ["controllers"],
             "~controllers/index.ts": ["controllers/index.ts"],
 

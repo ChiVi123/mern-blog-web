@@ -7,6 +7,7 @@ import express, { Response } from "express";
 import mongoose from "mongoose";
 import path from "path";
 
+import envConfig from "~config/env";
 import { AuthController, CommentController, PostController, UserController } from "~controllers";
 import { defineRoutes } from "~core";
 
@@ -15,7 +16,7 @@ const rootDir = path.resolve();
 // Valid process env is here
 
 mongoose
-    .connect(process.env.MONGODB_URI || "")
+    .connect(envConfig.MONGO_CONNECTION, envConfig.MONGO_OPTIONS)
     .then(() => console.log("MongoDB is connected"))
     .catch((error) => console.log(error));
 
@@ -30,7 +31,7 @@ defineRoutes([AuthController, CommentController, PostController, UserController]
 
 // file front end
 app.use(express.static(path.join(rootDir, "user-client", "dist")));
-app.get("*", (req, res) => {
+app.get("*", (_req, res) => {
     res.sendFile(path.join(rootDir, "user-client", "dist", "index.html"));
 });
 
@@ -41,6 +42,6 @@ app.use((err: Error, _req: any, res: Response, _next: any) => {
     res.status(statusCode).json({ success: false, statusCode, message });
 });
 
-app.listen(process.env.PORT, () => {
-    console.log(`Server is running on port ${process.env.PORT}`);
+app.listen(envConfig.SERVER_PORT, () => {
+    console.log(`Server is running on port ${envConfig.SERVER_PORT}`);
 });

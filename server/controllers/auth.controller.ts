@@ -2,6 +2,7 @@ import bcryptjs from "bcryptjs";
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
+import envConfig from "~config/env";
 import { Controller, Route } from "~decorator";
 import User from "~models/user.model";
 import { IUserEntity } from "~types";
@@ -53,7 +54,7 @@ class AuthController {
                 return;
             }
 
-            const token = jwt.sign({ id: validUser._id, isAdmin: validUser.isAdmin }, String(process.env.JWT_SECRET));
+            const token = jwt.sign({ id: validUser._id, isAdmin: validUser.isAdmin }, envConfig.JWT_SECRET_KEY);
             const { password: _password, ...rest } = validUser._doc;
 
             res.status(200).cookie("access_token", token, { httpOnly: true }).json(rest);
@@ -69,7 +70,7 @@ class AuthController {
         try {
             const user = await User.findOne({ email });
             if (user) {
-                const token = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, String(process.env.JWT_SECRET));
+                const token = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, envConfig.JWT_SECRET_KEY);
                 const { password, ...rest } = user._doc;
                 res.status(200).cookie("access_token", token, { httpOnly: true }).json(rest);
             } else {
@@ -84,7 +85,7 @@ class AuthController {
 
                 await newUser.save();
 
-                const token = jwt.sign({ id: newUser._id, isAdmin: newUser.isAdmin }, String(process.env.JWT_SECRET));
+                const token = jwt.sign({ id: newUser._id, isAdmin: newUser.isAdmin }, envConfig.JWT_SECRET_KEY);
                 const { password, ...rest } = newUser._doc;
 
                 res.status(200).cookie("access_token", token, { httpOnly: true }).json(rest);
